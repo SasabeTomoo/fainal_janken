@@ -1,3 +1,4 @@
+require 'byebug'
 # プレイヤー(自分)に「0 ~ 2」を入力させるロジックを書きます。
 class Player
   def hand
@@ -7,7 +8,7 @@ class Player
     # 変数「input_hand」にプレイヤーが入力したものを取得して代入します。
       # ヒント! 「getsメソッド」を使用します。
     # input_hand =
-    
+
     # 「input_hand」(取得した値)が「0, 1, 2」のいずれかだとwhileから脱出させ、それ以外だと初めから繰り返させます。
       # ヒント! 「while」と「if」を使用します。
       # 以降の型の例に沿って実装しましょう ※実装する時場合はコメントアウトに注意しましょう
@@ -16,17 +17,19 @@ class Player
           # 「input_hand」(取得した値)をそのまま返します。
             # ヒント！ 「return」を使用します。
     while true
-      input_hand = gets.to_i
-      if input_hand == 0 || input_hand == 1 || input_hand ==2
-        player_hand = input_hand
+      input_hand = gets.chomp
+
+      if input_hand == "0" || input_hand == "1" || input_hand =="2"
+
+        player_hand = input_hand.to_i
         return player_hand
       else
         puts "もう一度数字を入力してください。"
         puts "0:グー, 1:チョキ, 2:パー"
-          
+
         # end if文のend
-      end 
-    
+      end
+
       # end while文のend
     end
   end
@@ -37,6 +40,8 @@ class Enemy
     # グー、チョキ、パーの値をランダムに出力させます。
     enemy_hand = rand(3).to_i
     return enemy_hand
+    # デバック
+    binding.irb
   end
 end
 # プレイヤー(自分)が入力した「0 ~ 2」と、敵がランダムで生成した「0 ~ 2」をじゃんけんをさせて、その結果をコンソール上に出力するロジックを書きます。
@@ -52,7 +57,7 @@ class Janken
       # puts "あいこ"
       #「true」を返してじゃんけんを繰り返し実行させます。
         # ヒント！ 「return」を使用します。
-    
+
     #  elsif もしも下記の組み合わせだった場合
       #  (player_hand == 0 && enemy_hand == 1) || (player_hand == 1 && enemy_hand == 2) || (player_hand == 2 && enemy_hand == 0)
       # 「あなたの勝ちです」を出力します。
@@ -69,9 +74,12 @@ class Janken
     elsif (player_hand == 0 && enemy_hand == 1) || (player_hand == 1 && enemy_hand == 2) || (player_hand == 2 && enemy_hand == 0)
       puts "あなたの勝ちです"
       return false
-    else
+    elsif (player_hand == 0 && enemy_hand == 2) || (player_hand == 1 && enemy_hand == 0) || (player_hand == 2 && enemy_hand == 1)
       puts "あなたの負けです"
       return false
+    else
+      puts "数字を入力してください"
+      return true
     end
   end
 end
@@ -87,6 +95,9 @@ janken = Janken.new
 while true
 # 変数「next_game」にじゃんけんを実行して返ってきた値(戻り値)を代入します。
   # 「janken.pon(player.hand, enemy.hand)」でじゃんけんを実行しています。
+  # 笹部　next_gameは、true false の結果（そのため、whileでも動く）.next_gameに代入しているのは、ifのところのわかりやすさのため。
+  # 笹部　janken.ponのjankenは、=Janken.newの方で、クラスメソッド（janken = ["グー", "チョキ", "パー"]ではない）
+  # 笹部　player.handはplayer = Player.newで、クラスメソッド。player_handの方は、単なるx,yという変数。
   next_game = janken.pon(player.hand, enemy.hand)
   if next_game == false
     break
